@@ -1,5 +1,4 @@
 <script>
-  // Aquí puedes agregar cualquier lógica necesaria
 </script>
   
 <style>

@@ -22,7 +22,6 @@ def check_unique(data: CheckUniqueRequest, db: Session = Depends(get_db)):
 
 @router.post("/register")
 def register(usuario: UserRegister, db: Session = Depends(get_db)):
-    # Verificar si el nombre de usuario o la cédula ya existen
     existing_user = db.query(Usuario).filter(
         (Usuario.nombre_usuario == usuario.nombre_usuario) | 
         (Usuario.cedula_identidad == usuario.cedula_identidad)
@@ -30,14 +29,12 @@ def register(usuario: UserRegister, db: Session = Depends(get_db)):
     if existing_user:
         raise HTTPException(status_code=400, detail="Nombre de usuario o cédula de identidad ya están en uso")
     
-    # Hash de la contraseña
-    hashed_password = bcrypt.hashpw(usuario.contrasena.encode('utf-8'), bcrypt.gensalt())
+    password = bcrypt.hashpw(usuario.contrasena.encode('utf-8'), bcrypt.gensalt())
     
-    # Crear el nuevo usuario
     db_usuario = Usuario(
         nombre_completo=usuario.nombre_completo,
         nombre_usuario=usuario.nombre_usuario,
-        contrasena=hashed_password.decode('utf-8'),
+        contrasena=password.decode('utf-8'),
         nivel_acceso='visitante',
         correo_electronico=usuario.correo_electronico,
         cedula_identidad=usuario.cedula_identidad,
@@ -98,8 +95,8 @@ def update_usuario(nombre_usuario: str, usuario: UserUpdate, db: Session = Depen
     if usuario.discapacidades:
         db_usuario.discapacidades = usuario.discapacidades
     if usuario.contrasena:
-        hashed_password = bcrypt.hashpw(usuario.contrasena.encode('utf-8'), bcrypt.gensalt())
-        db_usuario.contrasena = hashed_password.decode('utf-8')
+        password = bcrypt.hashpw(usuario.contrasena.encode('utf-8'), bcrypt.gensalt())
+        db_usuario.contrasena = password.decode('utf-8')
 
     db.commit()
     db.refresh(db_usuario)

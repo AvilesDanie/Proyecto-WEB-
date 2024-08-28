@@ -43,11 +43,11 @@ def read_aplicaciones(db: Session = Depends(get_db)):
         Aplicacion.estado
     ).join(Sitio).join(Usuario, Aplicacion.participante_id == Usuario.cedula_identidad).filter(Aplicacion.fecha_visita >= datetime.now()).all()
 
-    grouped_applications = {}
+    agrupadro = {}
     for app in aplicaciones:
         grupo_id = app.grupo_id
-        if grupo_id not in grouped_applications:
-            grouped_applications[grupo_id] = {
+        if grupo_id not in agrupadro:
+            agrupadro[grupo_id] = {
                 "id": app.id,
                 "sitio_id": app.sitio_id,
                 "nombre_sitio": app.nombre_sitio,
@@ -58,12 +58,12 @@ def read_aplicaciones(db: Session = Depends(get_db)):
                 "estado": app.estado,
                 "participants": []
             }
-        grouped_applications[grupo_id]["participants"].append({
+        agrupadro[grupo_id]["participants"].append({
             "cedula": app.participante_id,
             "nombre": app.nombre_participante
         })
 
-    return list(grouped_applications.values())
+    return list(agrupadro.values())
 
 @router.put("/aplicaciones/estado")
 def update_application_status(update: AplicacionUpdate, db: Session = Depends(get_db)):
@@ -114,11 +114,11 @@ def get_user_applications(nombre_usuario: str, db: Session = Depends(get_db)):
 
     todas_aplicaciones = aplicaciones_usuario + aplicaciones_grupo
 
-    grouped_applications = {}
+    agrupadro = {}
     for app in todas_aplicaciones:
         grupo_id = app.grupo_id
-        if grupo_id not in grouped_applications:
-            grouped_applications[grupo_id] = {
+        if grupo_id not in agrupadro:
+            agrupadro[grupo_id] = {
                 "id": app.id,
                 "sitio_id": app.sitio_id,
                 "nombre_sitio": app.nombre_sitio,
@@ -129,9 +129,9 @@ def get_user_applications(nombre_usuario: str, db: Session = Depends(get_db)):
                 "estado": app.estado,
                 "participants": []
             }
-        grouped_applications[grupo_id]["participants"].append({
+        agrupadro[grupo_id]["participants"].append({
             "cedula": app.cedula,
             "nombre": app.nombre
         })
 
-    return list(grouped_applications.values())
+    return list(agrupadro.values())

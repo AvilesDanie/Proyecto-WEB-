@@ -52,8 +52,8 @@
     const imagenes: { [key: string]: string } = {
       '1': '/illinizas/img1.jpg',
       '2': '/illinizas/img2.jpg',
-      '3': '/illinizas/img3.jpg',
-      '4': '/illinizas/img4.jpg',
+      '3': '/illinizas/img4.jpg',
+      '4': '/illinizas/img3.jpg',
       '5': '/illinizas/img5.jpg',
       '6': '/illinizas/img6.jpg',
     };

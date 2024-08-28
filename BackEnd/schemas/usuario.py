@@ -85,7 +85,7 @@ class UsuarioPublico(BaseModel):
     nombre_usuario: str
     correo_electronico: EmailStr
     cedula_identidad: str
-    fecha_nacimiento: str  # Aquí declaramos que debe ser una cadena
+    fecha_nacimiento: str
     contacto: str
     nacionalidad: Optional[str] = None
     discapacidades: Optional[str] = None
@@ -100,7 +100,7 @@ class UsuarioPublico(BaseModel):
             nombre_usuario=obj.nombre_usuario,
             correo_electronico=obj.correo_electronico,
             cedula_identidad=obj.cedula_identidad,
-            fecha_nacimiento=obj.fecha_nacimiento.strftime('%Y-%m-%d'),  # Convertimos a cadena
+            fecha_nacimiento=obj.fecha_nacimiento.strftime('%Y-%m-%d'),
             contacto=obj.contacto,
             nacionalidad=obj.nacionalidad,
             discapacidades=obj.discapacidades
